@@ -28,7 +28,7 @@ spec:
               mountPath: /mosquitto/data
             - name: auth
               mountPath: {{ .Values.config.passwordFile | default "/mosquitto/config/passwd" }}
-              subPath: passwd
+              subPath: passwd_file
       volumes:
         - name: config
           configMap:
@@ -39,4 +39,7 @@ spec:
         - name: auth
           secret:
             secretName: {{ .Values.auth.existingSecret | default "mqtt-auth" }}
+            items:
+              - key: passwd # The key in the Secret
+                path: passwd_file # The name of the file it will be mounted as
             
